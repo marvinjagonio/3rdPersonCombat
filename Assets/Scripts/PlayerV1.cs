@@ -72,7 +72,7 @@ public class PlayerV1 : MonoBehaviour
     {
         if(p_moveAmt.y != 0)
         {
-            float rotationAmount = p_moveAmt.x * RotateSpeed * Time.deltaTime;
+            float rotationAmount = p_lookAmt.x * RotateSpeed * Time.deltaTime;
             Quaternion deltaRotation = Quaternion.Euler(0, rotationAmount, 0);
             p_rigidbody.MoveRotation(p_rigidbody.rotation * deltaRotation);
         }
