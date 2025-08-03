@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,6 +9,10 @@ public class PlayerV1 : MonoBehaviour
     private InputAction p_moveAction;
     private InputAction p_lookAction;
     private InputAction p_jumpAction;
+    private InputAction p_attackAction;
+    private InputAction p_kickAction;
+
+   
 
     private Vector2 p_moveAmt;
     private Vector2 p_lookAmt;
@@ -18,6 +23,9 @@ public class PlayerV1 : MonoBehaviour
     public float RotateSpeed = 5;
     public float JumpSpeed = 5;
 
+
+    public bool isPunching = false;
+    public bool isKicking = false;
     private void OnEnable()
     {
         InputActions.FindActionMap("Player").Enable();
@@ -27,15 +35,25 @@ public class PlayerV1 : MonoBehaviour
     {
         InputActions.FindActionMap("Player").Disable();
     }
-
+    private void Start()
+    {
+        
+    }
     private void Awake()
     {
         p_moveAction = InputSystem.actions.FindAction("Move");
         p_lookAction = InputSystem.actions.FindAction("Look");
         p_jumpAction = InputSystem.actions.FindAction("Jump");
+        p_attackAction = InputSystem.actions.FindAction("Attack");
+        p_kickAction = InputSystem.actions.FindAction("Kick");
+
+
 
         p_animator = GetComponent<Animator>();
         p_rigidbody = GetComponent<Rigidbody>();
+
+
+      
     }
 
     private void Update()
@@ -43,10 +61,29 @@ public class PlayerV1 : MonoBehaviour
         p_moveAmt = p_moveAction.ReadValue<Vector2>();
         p_lookAmt = p_lookAction.ReadValue<Vector2>();
 
-        if(p_jumpAction.WasPressedThisFrame())
+        if(p_attackAction.WasPressedThisFrame())
+        {
+            p_animator.SetTrigger("Punch");
+            isPunching = true;
+            Debug.Log("Punch");
+        }
+
+        if (p_kickAction.WasPressedThisFrame())
+        {
+            p_animator.SetTrigger("Kick");
+            isKicking = true;
+        }
+
+       
+
+        if (p_jumpAction.WasPressedThisFrame())
         {
             Jump();
         }
+
+        //WasPressedThisFrame
+        //IsPressed
+        //WasReleasedThisFrame
     }
 
     public void Jump()
